@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JunitTest" default="Add-Report" basedir=".">
+<!-- =================================================================== -->
+<!-- 变量设置  -->
+<!--参考文档1：http://www.cnblogs.com/puresoul/p/4201565.html 
+
+-->
+<!--参考文档2：http://www.2cto.com/kf/201212/175431.html-->
+<!--参考文档3：http://www.blogjava.net/joaquin25/articles/194801.html-->
+<!-- =================================================================== -->
+
+<!-- 源代码src路径 -->
+<property name="src.path" value="src/com/junit" />
+<!-- 编译文件class路径 -->
+<property name="build.path" value="build" />
+<!-- 单元测试代码路径 -->
+<property name="test.path" value="src/com/junitTest" />
+<!-- lib包路径 -->
+<property name="lib.path" value="D:\WorkSpace1022\AutoTestLib" />
+<!-- 生成报告junit4.xml路径 -->
+<property name="report.path" value="report" />
+
+<!-- =================================================================== -->
+<!-- 设置classpath -->
+<!-- =================================================================== -->
+<path id="compile.path">
+<fileset dir="${lib.path}">
+<include name="**/*.jar" />
+</fileset>
+
+<pathelement path="${build.path}" />
+</path>
+
+<!-- =================================================================== -->
+<!-- 初始化，新建build文件夹和report文件夹 -->
+<!-- =================================================================== -->
+<target name="init">
+<mkdir dir="${build.path}" />
+<mkdir dir="${report.path}" />
+</target>
+
+<!-- =================================================================== -->
+<!-- 清除历史编译class -->
+<!-- =================================================================== -->
+<target name="clean" description="clean">
+<delete dir="${build.path}" />
+</target>
+
+<!-- =================================================================== -->
+<!-- 编译测试文件，初始化目录 -->
+<!-- =================================================================== -->
+<target name="compile" depends="init" description="compile">
+<javac srcdir="${src.path}" destdir="${build.path}" classpathref="compile.path" />
+<javac srcdir="${test.path}" destdir="${build.path}" classpathref="compile.path" />
+</target>
+
+<!-- =================================================================== -->
+<!-- 执行测试案例,生成xml文档 -->
+<!-- =================================================================== -->
+<target name="Junit-test" depends="compile" description="Run Junittest">
+<junit printsummary="true" fork="true">
+<formatter type="xml" usefile="true" />
+
+<classpath refid="compile.path" />
+
+<batchtest fork="on" todir="${report.path}" haltonfailure="no">
+<fileset dir="${build.path}">
+<include name="**/*Test.class" />
+</fileset>
+</batchtest>
+</junit>
+</target>
+
+<!-- 解析xml文档，产生单元测试报表文档 -->
+<target name="Add-Report" depends="Junit-test" description="Complete Report">
+<junitreport todir="${report.path}">
+<fileset dir="${report.path}">
+<include name="TEST-*.xml" />
+</fileset>
+<report format="frames" todir="${report.path}" />
+</junitreport>
+
+</target>
+
+<!-- 清除Junit生成的报表文档 -->
+<target name="delete" description="Delete the report">
+<delete dir="${report.path}" />
+</target>
+
+</project>

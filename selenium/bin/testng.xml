@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Selenium">
+    <parameter name="test1" value="http://flh001.com"/>
+    		
+    <test name="test1" preserve-order="true">
+    <classes>
+        <class name="bcbtest.Testindex">          
+        </class>          
+    </classes>
+    </test>
+  
+            
+ </suite>
+
+
+
+
+
+
+
+
+
